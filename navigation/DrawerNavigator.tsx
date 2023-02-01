@@ -12,10 +12,10 @@ export default function DrawerNavigator(): JSX.Element {
         <Drawer.Navigator screenOptions={{
             headerStyle: { backgroundColor: Colours.raspberry },
             headerTintColor: Colours.white,
-            sceneContainerStyle: { backgroundColor: Colours.vanilla },
+            sceneContainerStyle: { backgroundColor: Colours.cappuccino },
             drawerActiveBackgroundColor: Colours.raspberry,
             drawerActiveTintColor: Colours.white,
-            drawerStyle: { backgroundColor: Colours.vanilla },
+            drawerStyle: { backgroundColor: Colours.cappuccino },
             drawerInactiveTintColor: Colours.raspberry
         }}>
             <Drawer.Screen name='Categories' component={ CategoriesScreen } options={{
