@@ -1,10 +1,11 @@
 import { useLayoutEffect } from 'react';
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import { Image, ScrollView, StyleSheet, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useFavorites } from '../context/FavoritesContext';
+import { Colours } from '../assets/styles/Colours';
 import Meal from '../models/meal';
 import MealDetails from '../components/MealDetails';
-import { Colours } from '../assets/styles/Colours';
 import Subtitle from '../components/Subtitle';
 import List from '../components/List';
 import IconButton from '../components/IconButton';
@@ -15,20 +16,27 @@ type Props = {
 };
 
 export default function MealDetailsScreen({ route, navigation }: Props): JSX.Element {
+    const favoritesContext = useFavorites();
     const meal: Meal = route.params?.meal;
     const mealIngredients: Array<string> = meal.ingredients;
     const preparationSteps: Array<string> = meal.steps;
+    const isMealFavourite = favoritesContext.favorites.includes(meal.id);
 
-    const addToFavourites = () => {
-        console.log('Meal ' + meal.title + ' added to favourites!');
+    const toggleFavourites = (): void => {
+        return isMealFavourite ? favoritesContext.remove(meal.id) : favoritesContext.add(meal.id);
     };
 
     useLayoutEffect(() => {
         navigation.setOptions({
             title: meal.title,
-            headerRight: () => <IconButton icon='star' size={24} color={ Colours.white } onPress={ addToFavourites } />
+            headerRight: () => <IconButton
+                icon={ isMealFavourite ? 'star' : 'star-outline' }
+                size={24}
+                color={ Colours.white }
+                onPress={ toggleFavourites }
+            />
         })
-    }, [meal, addToFavourites])
+    }, [meal, toggleFavourites])
 
     return (
         <ScrollView style={ styles.container }>

@@ -2,7 +2,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
-    icon: 'star',
+    icon: 'star'|'star-outline',
     size: number,
     color: string,
     onPress: () => void,
