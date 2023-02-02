@@ -1,23 +1,33 @@
-import { ReactNode, useState } from 'react';
-import { FavoritesContext, FavoritesContextType } from './FavoritesContext';
+import { ReactNode, useReducer } from 'react';
+import { ACTIONS, FavoritesContext, favoritesReducer, FavoritesType, initialState } from './FavoritesContext';
 
 type Props = {
     children: ReactNode,
 };
 
 export default function FavoritesProvider({ children }: Props): JSX.Element {
-    const [favorites, setFavorites] = useState<Array<string>>([]);
+    const [state, dispatch] = useReducer(favoritesReducer, initialState);
 
     const add = (mealId: string): void => {
-        setFavorites((currentFavourites: Array<string>) => [...currentFavourites, mealId]);
+        dispatch({
+            type: ACTIONS.ADD,
+            payload: {
+                favorites: [...state.favorites, mealId],
+            },
+        });
     };
 
     const remove = (mealId: string): void => {
-        setFavorites((currentFavourites: Array<string>) => currentFavourites.filter((id: string) => id !== mealId));
+        dispatch({
+            type: ACTIONS.REMOVE,
+            payload: {
+                favorites: state.favorites.filter((id: string) => id !== mealId)
+            },
+        });
     };
 
-    const context: FavoritesContextType = {
-        favorites: favorites,
+    const context: FavoritesType = {
+        favorites: state.favorites,
         add: add,
         remove: remove,
     };
